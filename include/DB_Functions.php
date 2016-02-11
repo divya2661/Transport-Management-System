@@ -206,6 +206,55 @@ class DB_Functions{
     }
 
 
+    public function update_invoice_GtoI($day,$VnumGtoI){
+
+        $stmt = $this->conn->prepare("UPDATE Invoice SET VnumGtoI = ? WHERE Day = ?");
+        $stmt->bind_param("is",$VnumGtoI,$day);
+
+        if($stmt->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function update_invoice_ItoG($day,$VnumItoG){
+
+        $stmt = $this->conn->prepare("UPDATE Invoice SET VnumItoG = ? WHERE Day = ?");
+        $stmt->bind_param("is",$VnumItoG,$day);
+
+        if($stmt->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function getInvoiceTable(){
+
+        $stmt = $this->conn->prepare("SELECT Day,VnumGtoI,VnumItoG FROM Invoice");
+        
+        if($stmt->execute())
+        {
+            $stmt->bind_result($Day,$VnumGtoI,$VnumItoG);
+            $i=0;
+            while($stmt->fetch())
+            {
+                $invoice_table[$i]["day"] = $Day;
+                $invoice_table[$i]["VnumGtoI"] = $VnumGtoI;
+                $invoice_table[$i]["VnumItoG"] = $VnumItoG;
+                $i++;
+            }
+        }
+        return $invoice_table;
+    }
+
 }
 
 ?>
