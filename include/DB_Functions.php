@@ -255,6 +255,63 @@ class DB_Functions{
         return $invoice_table;
     }
 
+
+    public function insert_request($admin_email,$dt,$stime,$etime,$nos,$reason,$usr,$usremail)
+    {
+        $stmt=$this->conn->prepare("INSERT INTO Notification VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param("ssssss",$dt, $stime, $etime, $nos, $reason, $usr);
+        //$result=mysql_query($query) or die("query error");
+
+        //$count=mysql_affected_rows();
+
+        if($stmt->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function fetch_request($dt,$stime,$req)
+    {
+        $stmt=$this->conn->prepare("delete from Notification where Date=? AND start_time=? AND requested_by=?");
+        $stmt->bind_param("sss",$dt, $stime, $req);
+
+        if($stmt->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function notificate()
+    {
+        $stmt=$this->conn->prepare("select * from Notification");
+        
+        if($stmt->execute())
+        {
+            $stmt->bind_result($date,$start_time,$end_time,$Nstudent,$reason,$requested_by);
+            $i=0;
+            while($stmt->fetch()){
+                $Ndetails[$i]["date"] = $date;
+                $Ndetails[$i]["start_time"] = $start_time;
+                $Ndetails[$i]["end_time"] = $end_time;
+                $Ndetails[$i]["Nstudent"] = $Nstudent;
+                $Ndetails[$i]["reason"] = $reason;
+                $Ndetails[$i]["requested_by"] = $requested_by;
+                $i++;
+            }
+        }
+
+
+        return $Ndetails;
+    }
+
 }
 
 ?>
