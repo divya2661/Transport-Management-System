@@ -7,6 +7,7 @@ if(!isset($_SESSION['login_user']))
 else
 {
   require_once 'include/admin_notify.php';
+
   $notify = new admin_notify();
   
 ?>
@@ -31,6 +32,10 @@ else
 	if(isset($_POST['approve']) || isset($_POST['deny']))
 		{
 			$id = $_POST['id'];
+			$dt = $_POST['dt'];
+			$s_time = $_POST['s_time'];
+			$e_time = $_POST['e_time'];
+			$nos = $_POST['nos'];
 
 			if(isset($_POST['approve'])){
 				$status="approve";
@@ -38,7 +43,7 @@ else
 			else{
 				$status="deny";
 			}
-			$not1=$notify->notify($id,$status);	
+			$not1=$notify->notify($id,$status,$dt,$s_time,$e_time,$nos);	
 			if($not1!=true){
 				$message = "Could not process the request";
 				echo "<script type='text/javascript'>alert('$message');</script>";
@@ -65,7 +70,7 @@ else
 			<tr><th>Date:</th><td><input class="form-control" name="dt" type="text" value="<?php echo $Ndetails[$i]["date"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>Start Time:</th><td><input class="form-control" name="s_time" type="text" value="<?php echo $Ndetails[$i]["start_time"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>End Time:</th><td><input class="form-control" name="e_time" type="text" value="<?php echo $Ndetails[$i]["end_time"]; ?>" size="20" readonly/></td></tr>
-			<tr><th>No of people:</th><td><input class="form-control" name="nop" type="text" value="<?php echo $Ndetails[$i]["Nstudent"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>No of people:</th><td><input class="form-control" name="nos" type="text" value="<?php echo $Ndetails[$i]["Nstudent"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>Reason:</th><td><input class="form-control" name="reason" type="text" value="<?php echo $Ndetails[$i]["reason"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>Requested by:</th><td><input class="form-control" name="req" type="text" value="<?php echo $Ndetails[$i]["requested_by"]; ?>" size="20" readonly/></td></tr>
 			</table>

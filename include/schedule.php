@@ -151,6 +151,12 @@ class schedule{
 		return $BusSchedule;
 	}	
 
+	public function getExtraBusSchedule(){
+
+		$ExtraBusSchedule = $this->db->getExtraBusSchedule();
+		return $ExtraBusSchedule;
+	}
+
 	//add hours in a given time
 	public function addHour($time,$x){
     	
@@ -164,6 +170,7 @@ class schedule{
 		$Tint  = idate("H",strtotime($time));
 		return $Tint;
     }
+
 
 }
 

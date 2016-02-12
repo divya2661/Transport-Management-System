@@ -6,7 +6,8 @@
 	$invoice = new invoice();
 	$vehicle = new vehicle();
 	$price = $vehicle->getVechiclePrice();
-	$finalInvoice = $invoice->generate_invoice($price);
+	$capacity  = $vehicle->getVechicleCapacity();
+	$finalInvoice = $invoice->generate_invoice($price,$capacity);
 	
 
 ?>
@@ -27,7 +28,7 @@
 
   <body>   
  	
-  	<div style="margin-top:15%; padding-bottom: 3%;" class="col-md-4 col-sm-12 col-md-offset-4">   
+  	<div style="margin-top:5%; padding-bottom: 3%;" class="col-md-4 col-sm-12 col-md-offset-4">   
      
 	    	<p style="font-size:23px">
 	    		<?php
@@ -60,6 +61,20 @@
 	              	<td><?php echo $finalInvoice["ItoG"]["TotalPrice"]?></td>
 	              </tr>
 	            </tbody> 
+	          </table>
+	          <table class="table table-bordered">
+	          	<thead>
+	          		<tr>
+	          			<th>Total Extra Buses</th>
+	          			<th>Total Amount</th>
+	          		</tr>
+	          	</thead>
+	          	<tbody>
+	          		<tr>
+	          			<td><?php echo $finalInvoice["extra"]["TotalVnum"] ?></td>
+	          			<td><?php echo $finalInvoice["extra"]["TotalPrice"] ?></td>
+	          		</tr>
+	          	</tbody>
 	          </table>
 	     
     </div>

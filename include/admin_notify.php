@@ -16,10 +16,14 @@ class admin_notify{
     }
 
 
-    public function notify($id,$status)
+    public function notify($id,$status,$dt,$s_time,$e_time,$nos)
     {
     	//mail("ug201213026@iitj.ac.in", "RE:request", $status , "From: ug201213026@iitj.ac.in");
     	$fetch_not = $this->db->fetch_request($id);
+       
+        if($status=="approve"){
+            $this->db->addExtraVehicle($dt,$s_time,$e_time,$nos);
+        }
 
     	if($fetch_not==true)
     	{

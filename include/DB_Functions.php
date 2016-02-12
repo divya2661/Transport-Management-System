@@ -309,6 +309,37 @@ class DB_Functions{
         return $Ndetails;
     }
 
+    public function addExtraVehicle($date,$s_time,$e_time,$num){
+        $stmt = $this->conn->prepare("INSERT INTO ExtraVehicle(dt,S_time,E_time,Nstudent) VALUES(?,?,?,?)");
+        $stmt->bind_param("sssi",$date,$s_time,$e_time,$num);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function getExtraBusSchedule(){
+
+        $stmt = $this->conn->prepare("SELECT ID,dt,S_time,E_time,Nstudent FROM ExtraVehicle");
+
+        if($stmt->execute()){
+            $stmt->bind_result($id,$dt,$stime,$etime,$Nstudent);
+            $i=0;
+            while($stmt->fetch()){
+                $EVehicle[$i]["id"] = $id;
+                $EVehicle[$i]["dt"] = $dt;
+                $EVehicle[$i]["stime"] = $stime;
+                $EVehicle[$i]["etime"] = $etime;
+                $EVehicle[$i]["Nstudent"] = $Nstudent;
+                $i++;   
+            }
+        }
+        return $EVehicle;
+    }
+
 }
 
 ?>
