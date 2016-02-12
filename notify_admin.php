@@ -6,16 +6,25 @@ if(!isset($_SESSION['login_user']))
 }
 else
 {
-	//include_once("frontend/request.html");
   require_once 'include/admin_notify.php';
   $notify = new admin_notify();
   
-  // $day = array("Monday","Tuesday","Wednesday","Thursday","Friday");
-  // $showDay = array("Mon","Tues","Wed","Thu","Fri");
-  // $Vcapacity = $vehicle->getVechicleCapacity();
 ?>
 
 <html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title>Bus Schedule</title>
+	    <link href="css/bootstrap.min.css" rel="stylesheet">
+	    <link rel="stylesheet" href="css/datepicker.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <script src="js/bootstrap.min.js"></script>
+	    <script src="js/jquery-1.9.1.min.js"></script>	
+	    <style type="text/css">
+	    </style>
+  	</head>
 <?php
 	if(isset($_POST['approve']) || isset($_POST['deny']))
 		{
@@ -35,18 +44,29 @@ else
 		for($i=0;$i<count($Ndetails);$i++)
 		{	
 ?>
-		<form action="" method="post">
-		<table cellpadding="6", cellspacing="3" border="6">
-		<tr><th>Date:</th><td><input name="dt" type="text" value="<?php echo $Ndetails[$i]["date"]; ?>" size="20" readonly/></td></tr>
-		<tr><th>Start Time:</th><td><input name="s_time" type="text" value="<?php echo $Ndetails[$i]["start_time"]; ?>" size="20" readonly/></td></tr>
-		<tr><th>End Time:</th><td><input name="e_time" type="text" value="<?php echo $Ndetails[$i]["end_time"]; ?>" size="20" readonly/></td></tr>
-		<tr><th>No of people:</th><td><input name="nop" type="text" value="<?php echo $Ndetails[$i]["Nstudent"]; ?>" size="20" readonly/></td></tr>
-		<tr><th>Reason:</th><td><input name="reason" type="text" value="<?php echo $Ndetails[$i]["reason"]; ?>" size="20" readonly/></td></tr>
-		<tr><th>Requested by:</th><td><input name="req" type="text" value="<?php echo $Ndetails[$i]["requested_by"]; ?>" size="20" readonly/></td></tr>
-		</table>
-		    <input type="submit" name="approve" value="approve" />
-		    <input type="submit" name="deny" value="deny" />
-		</form>
+		
+		<div class="col-md-6">
+			<form action="" method="post" role="form">
+			<div class="row">
+			
+			<table class="col-md-10 col-md-offset-1" cellpadding="6", cellspacing="3" border="6">
+			<tr><th>Date:</th><td><input class="form-control" name="dt" type="text" value="<?php echo $Ndetails[$i]["date"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>Start Time:</th><td><input class="form-control" name="s_time" type="text" value="<?php echo $Ndetails[$i]["start_time"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>End Time:</th><td><input class="form-control" name="e_time" type="text" value="<?php echo $Ndetails[$i]["end_time"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>No of people:</th><td><input class="form-control" name="nop" type="text" value="<?php echo $Ndetails[$i]["Nstudent"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>Reason:</th><td><input class="form-control" name="reason" type="text" value="<?php echo $Ndetails[$i]["reason"]; ?>" size="20" readonly/></td></tr>
+			<tr><th>Requested by:</th><td><input class="form-control" name="req" type="text" value="<?php echo $Ndetails[$i]["requested_by"]; ?>" size="20" readonly/></td></tr>
+			</table>
+			
+			</div>
+			<div class="row">
+			<div class="col-md-offset-1">
+			   <button style="width:45%" type="submit" name="approve" class="btn btn-success">Approve</button> 
+			   <button style="width:45%" type="submit" name="deny" class="btn btn-danger">Deny</button> 
+			</div>
+			</div>   
+			</form>
+		</div>
 <?php
 	}
 ?>

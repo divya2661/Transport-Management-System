@@ -256,14 +256,12 @@ class DB_Functions{
     }
 
 
-    public function insert_request($admin_email,$dt,$stime,$etime,$nos,$reason,$usr,$usremail)
+    public function insert_request($dt,$stime,$etime,$nos,$reason,$usremail)
     {
-        $stmt=$this->conn->prepare("INSERT INTO Notification VALUES (?,?,?,?,?,?)");
-        $stmt->bind_param("ssssss",$dt, $stime, $etime, $nos, $reason, $usr);
-        //$result=mysql_query($query) or die("query error");
-
-        //$count=mysql_affected_rows();
-
+        
+        $stmt = $this->conn->prepare("INSERT INTO Notification(dt,startTime,endTime,Nstudent,reason,userEmail) VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param("sssiss",$dt, $stime, $etime, $nos, $reason, $usremail);
+       
         if($stmt->execute())
         {
             return true;
@@ -291,7 +289,7 @@ class DB_Functions{
 
     public function notificate()
     {
-        $stmt=$this->conn->prepare("select * from Notification");
+        $stmt=$this->conn->prepare("select dt,startTime,endTime,Nstudent,reason,userEmail from Notification");
         
         if($stmt->execute())
         {

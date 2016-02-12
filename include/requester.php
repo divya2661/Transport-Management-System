@@ -16,30 +16,46 @@ class requester{
     }
 
 
-    public function place_request($admin_email,$dt,$stime,$etime,$nos,$reason,$usr,$usremail)
+    public function place_request($admin_email,$dt,$stime,$etime,$nos,$reason,$usremail)
     {
+
     	$message="date:" . $dt . "<br>";
         $message.="start time:" . $stime . "<br>";
         $message.="end time:" . $etime . "<br>";
         $message.="no of people:" . $nos . "<br>";
         $message.="reason:" . $reason . "<br>";
+        $mail=false;
+        $notify=false;
+        
         
 
         if (mail("ug201213005@iitj.ac.in", "request", $message , "From: ug201213026@iitj.ac.in")) 
         { 
-            echo '<p>Your message has been sent!</p>';
+            $mail=true;
         } 
         else 
         { 
-            echo '<p>Something went wrong, go back and try again!</p>'; 
+            $mail=false; 
         }
 
-    	$insert_req = $this->db->insert_request($admin_email,$dt,$stime,$etime,$nos,$reason,$usr,$usremail);
+       
+    	$insert_req = $this->db->insert_request($dt,$stime,$etime,$nos,$reason,$usremail);
 
-    	if($insert_req==true)
-    		echo "Request placed";
-    	else
-    		echo "error placing request";
+    	if($insert_req==true && $mail==true){
+    		$result= "Request has been sent.";
+        }
+    	elseif($insert_req==true && $mail==false){
+
+    		$result = "Notification sent.";
+        }
+        elseif($insert_req==false && $mail==true){
+            $result = "Email has been sent to admin regarding your request.";
+        }
+        else
+        {
+            $result = "There is some error could't notify admin. Please try again";
+        }
+        return $result;
     }
 }
 

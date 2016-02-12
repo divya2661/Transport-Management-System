@@ -23,7 +23,7 @@
 				header("Location: /SE/frontend/admin.html");
 			}
 			else{
-				echo "<a href='/SE/frontend/ChangeSetting.html'?utype=> click to login ".$_SESSION['login_user']."</a>";
+				header("Location: /SE/place_request.php");
 			}
 		}
 		else
