@@ -6,11 +6,11 @@ class schedule{
 	function __construct(){
 
 		require_once 'include/DB_Functions.php';
-		require_once 'include/invoice.php';
+		//require_once 'include/invoice.php'
 		$db = new DB_Functions();
-		$invoice = new invoice();
+		//$invoice = new invoice();
 		$this->db = $db;
-		$this->invoice = $invoice;
+		//$this->invoice = $invoice;
 	}
 
 	// destructor
@@ -22,13 +22,12 @@ class schedule{
     //gives complete schedule for given day while provided bus capacity
 	public function generate_schedule($day,$Vcapacity){
 
-		$invoiceNvGtoI = 0;
-		$invoiceNvItoG = 0;
-
 		//get each batch slots from database
+		$totalNvvehicleGtoI = 0;
+  		$totalNvvehicleItoG = 0;
 		$BatchSlot = $this->db->getSlotString();
 		
-
+		echo "here";
 		//generate an array of slot and students 
 		//for coming to GPRA and going to GPRA
 
@@ -105,48 +104,49 @@ class schedule{
 	  		
   			$GtoInumV = ceil($STime[$i]["NumStudent"]/$Vcapacity);
   			$ItoGnumV = ceil($ETime[$i]["NumStudent"]/$Vcapacity);
+  			
 
 	  		if($STime[$i]["NumStudent"]!=0){
 	 
 	  			$BusSchedule[$i]["GtoI"]["time"] = $i*100-70;
 	  			$BusSchedule[$i]["GtoI"]["NumVehicle"] =  $GtoInumV;
-	  			$invoiceNvGtoI = $invoiceNvGtoI  + $GtoInumV;
+	  			$totalNvvehicleGtoI = $totalNvvehicleGtoI + $GtoInumV;
 	  		}
 	  		else{
 	  			
 	  			$BusSchedule[$i]["GtoI"]["time"] = $i*100-70;
 	  			$BusSchedule[$i]["GtoI"]["NumVehicle"] =  1;
-	  			$invoiceNvGtoI = $invoiceNvGtoI  + 1;
+	  			$totalNvvehicleGtoI = $totalNvvehicleGtoI + 1;
 	  		}
 	  		if($ETime[$i]["NumStudent"]!=0){
 	  			$BusSchedule[$i]["ItoG"]["time"] = $i*100+30;
 	  			$BusSchedule[$i]["ItoG"]["NumVehicle"] = $ItoGnumV ;
-	  			$invoiceNvItoG = $invoiceNvItoG  + $ItoGnumV;
+	  			$totalNvvehicleItoG = $totalNvvehicleItoG + $ItoGnumV;
 	  		}
 	  		else{
 	  			
 	  			$BusSchedule[$i]["ItoG"]["time"] = $i*100+30;
 	  			$BusSchedule[$i]["ItoG"]["NumVehicle"] = 1;
-	  			$invoiceNvItoG = $invoiceNvItoG  + 1;
+	  			$totalNvvehicleItoG = $totalNvvehicleItoG + 1;
 	  		}
 	  	}
 
-	  		$invoiceUpdateGtoI = $this->invoice->update_invoice_GtoI($day,$invoiceNvGtoI);
-	  		$invoiceUpdateItoG = $this->invoice->update_invoice_ItoG($day,$invoiceNvItoG);
+	  	// $GtoIinvoice = $this->invoice->update_invoice_GtoI($day,$totalNvvehicleGtoI);
+	  	// $ItoGinvoice = $this->invoice->update_invoice_ItoG($day,$totalNvvehicleItoG);
 
-	  		if(!$invoiceUpdateGtoI || !$invoiceUpdateItoG){
-	  			echo "Error in invoice updation";
-	  		}
-
+	  	// if(!$GtoIinvoice || !$ItoGinvoice){
+	  	// 	echo "invoice updation error in schedule.php";
+	  	// }
+	  	
 
 	  	// //Uncomment to print bus schedule
-	  	// for ($i=8; $i < count($STime); $i++) { 
-	  	// 	echo $BusSchedule[$i]["GtoI"]["time"]." x ".$BusSchedule[$i]["GtoI"]["NumVehicle"]."  ".$STime[$i]["NumStudent"]."<br>";
-	  	// }
-	  	// echo "<br><br>";
-	  	// for ($i=8; $i < count($STime); $i++) { 
-	  	// 	echo $BusSchedule[$i]["ItoG"]["time"]." x ".$BusSchedule[$i]["ItoG"]["NumVehicle"]."  ".$ETime[$i]["NumStudent"]."<br>";
-	  	// }
+	  	for ($i=8; $i < count($STime); $i++) { 
+	  		echo $BusSchedule[$i]["GtoI"]["time"]." x ".$BusSchedule[$i]["GtoI"]["NumVehicle"]."  ".$STime[$i]["NumStudent"]."<br>";
+	  	}
+	  	echo "<br><br>";
+	  	for ($i=8; $i < count($STime); $i++) { 
+	  		echo $BusSchedule[$i]["ItoG"]["time"]." x ".$BusSchedule[$i]["ItoG"]["NumVehicle"]."  ".$ETime[$i]["NumStudent"]."<br>";
+	  	}
 	  
 		return $BusSchedule;
 	}	

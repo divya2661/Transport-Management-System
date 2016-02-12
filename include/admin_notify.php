@@ -16,18 +16,18 @@ class admin_notify{
     }
 
 
-    public function notify($dt,$stime,$req,$status)
+    public function notify($id,$status)
     {
     	//mail("ug201213026@iitj.ac.in", "RE:request", $status , "From: ug201213026@iitj.ac.in");
-    	$fetch_not = $this->db->fetch_request($dt,$stime,$req);
+    	$fetch_not = $this->db->fetch_request($id);
 
     	if($fetch_not==true)
     	{
-    		echo "succesfully approved or denied";
+    		return true;
     	}
     	else
     	{
-    		echo "error granting request";
+    		return false;
     	}
     }
 

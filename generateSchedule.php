@@ -8,6 +8,7 @@
   $day = array("Monday","Tuesday","Wednesday","Thursday","Friday");
   $showDay = array("Mon","Tues","Wed","Thu","Fri");
   $Vcapacity = $vehicle->getVechicleCapacity();
+  
 ?>
 
 <!DOCTYPE html>

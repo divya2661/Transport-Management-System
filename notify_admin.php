@@ -25,21 +25,32 @@ else
 	    <style type="text/css">
 	    </style>
   	</head>
+  	<body>
+  	<div style="margin-bottom:10px" class="row"></div>
 <?php
 	if(isset($_POST['approve']) || isset($_POST['deny']))
 		{
-			$dt=$_POST['dt'];
-			$stime=$_POST['s_time'];
-			$req=$_POST['req'];
+			$id = $_POST['id'];
 
-			if(isset($_POST['approve']))
+			if(isset($_POST['approve'])){
 				$status="approve";
-			else
+			}
+			else{
 				$status="deny";
-			$not1=$notify->notify($dt,$stime,$req,$status);	
+			}
+			$not1=$notify->notify($id,$status);	
+			if($not1!=true){
+				$message = "Could not process the request";
+				echo "<script type='text/javascript'>alert('$message');</script>";
+			}
 		}
 
 		$Ndetails=$notify->fetch_notification();
+
+		if(count($Ndetails)==0){
+			$message = "No notifications";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+		}
 
 		for($i=0;$i<count($Ndetails);$i++)
 		{	
@@ -50,6 +61,7 @@ else
 			<div class="row">
 			
 			<table class="col-md-10 col-md-offset-1" cellpadding="6", cellspacing="3" border="6">
+			<tr><th>ID:</th><td><input class="form-control" name="id" type="text" value="<?php echo $Ndetails[$i]["id"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>Date:</th><td><input class="form-control" name="dt" type="text" value="<?php echo $Ndetails[$i]["date"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>Start Time:</th><td><input class="form-control" name="s_time" type="text" value="<?php echo $Ndetails[$i]["start_time"]; ?>" size="20" readonly/></td></tr>
 			<tr><th>End Time:</th><td><input class="form-control" name="e_time" type="text" value="<?php echo $Ndetails[$i]["end_time"]; ?>" size="20" readonly/></td></tr>
@@ -67,9 +79,11 @@ else
 			</div>   
 			</form>
 		</div>
+
 <?php
 	}
 ?>
+</body>
 </html>
 <?php
 }

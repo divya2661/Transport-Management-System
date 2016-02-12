@@ -210,7 +210,6 @@ class DB_Functions{
 
         $stmt = $this->conn->prepare("UPDATE Invoice SET VnumGtoI = ? WHERE Day = ?");
         $stmt->bind_param("is",$VnumGtoI,$day);
-
         if($stmt->execute())
         {
             return true;
@@ -272,10 +271,10 @@ class DB_Functions{
         }
     }
 
-    public function fetch_request($dt,$stime,$req)
+    public function fetch_request($id)
     {
-        $stmt=$this->conn->prepare("delete from Notification where Date=? AND start_time=? AND requested_by=?");
-        $stmt->bind_param("sss",$dt, $stime, $req);
+        $stmt=$this->conn->prepare("DELETE FROM Notification WHERE ID=?");
+        $stmt->bind_param("i",$id);
 
         if($stmt->execute())
         {
@@ -289,13 +288,15 @@ class DB_Functions{
 
     public function notificate()
     {
-        $stmt=$this->conn->prepare("select dt,startTime,endTime,Nstudent,reason,userEmail from Notification");
+        $Ndetails = null;   
+        $stmt=$this->conn->prepare("SELECT ID,  dt,startTime,endTime,Nstudent,reason,userEmail FROM Notification");
         
         if($stmt->execute())
         {
-            $stmt->bind_result($date,$start_time,$end_time,$Nstudent,$reason,$requested_by);
+            $stmt->bind_result($id,$date,$start_time,$end_time,$Nstudent,$reason,$requested_by);
             $i=0;
             while($stmt->fetch()){
+                $Ndetails[$i]["id"] = $id;
                 $Ndetails[$i]["date"] = $date;
                 $Ndetails[$i]["start_time"] = $start_time;
                 $Ndetails[$i]["end_time"] = $end_time;
@@ -305,8 +306,6 @@ class DB_Functions{
                 $i++;
             }
         }
-
-
         return $Ndetails;
     }
 

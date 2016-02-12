@@ -15,7 +15,7 @@ class invoice{
          
     }
 
-    public function update_invoice_GtoI($day,$Vnum){
+    public function update_invoice_GtoI($day,$Vnum)	{
 
     	$updated = $this->db->update_invoice_GtoI($day,$Vnum);
     	if($updated)
@@ -66,7 +66,7 @@ class invoice{
 
     	$invoice["ItoG"]["TotalVnum"] = $NumBusItoG;
     	$invoice["ItoG"]["TotalPrice"] = $NumBusItoG*$price;
-    	
+
     	return $invoice;
     }
 
